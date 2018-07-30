@@ -9,6 +9,7 @@ class Front extends CI_Controller {
 		
 		$this->load->database();
 		$this->load->library('session');
+		$this->load->library('template');
 		$this->load->model('front_model');
 	}
 
@@ -68,6 +69,12 @@ class Front extends CI_Controller {
 		$response['status'] = $status;
 
 		echo json_encode($response);
+	}
+
+	public function load_friend_request()
+	{
+		$friendrequest = $this->front_model->get_friend_request($this->session->userdata('user_id'));
+		$this->template->loadAjax("frontend/common/ajax_friend_request_list", array("friendrequest" => $friendrequest), 0);
 	}
 
 	protected function displayPageNotFound()

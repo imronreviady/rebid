@@ -26,9 +26,14 @@ class Front_model extends CI_Model {
 		}
 	}
 
-	public function getListFriendRequest($user_id = '')
+	public function get_friend_request($user_id)
 	{
-		return $this->db->get_where('friend_requests', array('to_user_id' => $user_id))->join('user', 'friend_requests.from_user_id = user.user_id', 'left')->result_array();
+		return $this->db->where('friend_requests.to_user_id', $user_id)
+			->select("user.user_id as user_id, user.username as username, user.first_name as first_name, user.last_name as last_name, friend_requests.status, friend_requests.created_at, friend_requests.friend_request_id as friend_request_id")
+			->join("user", "user.user_id = friend_requests.from_user_id")
+			->limit(5)
+			->order_By("friend_requests.friend_request_id", "DESC")
+			->get("friend_requests");
 	}
 
 }

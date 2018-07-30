@@ -20,7 +20,7 @@
 
 		<div class="control-block">
 
-			<div class="control-icon more has-items">
+			<div class="control-icon more has-items" id="div-friend-request">
 				<svg class="olymp-happy-face-icon"><use xlink:href="<?=base_url()?>assets/frontend/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use></svg>
 				<div class="label-avatar bg-blue">6</div>
 
@@ -32,7 +32,7 @@
 					</div>
 
 					<div class="mCustomScrollbar" data-mcs-theme="dark">
-						<ul class="notification-list friend-requests">
+						<ul class="notification-list friend-requests" id="list-friend-request">
 							<li>
 								<div class="author-thumb">
 									<img src="<?=base_url()?>assets/frontend/img/avatar55-sm.jpg" alt="author">
@@ -472,6 +472,26 @@
 <!-- ... end Header-BP -->
 <script type="text/javascript">
 	$(document).ready(function() {
+
+		$("#div-friend-request").hover(function() {
+			$.ajax({
+				url : baseurl + "front/load_friend_request",
+				error: function() {
+					swal({
+						title: "<?= get_phrase('oopss_!') ?>",
+						text: "<?= get_phrase('something_was_wrong,_please_try_again') ?>",
+						type: "error",
+						confirmButtonClass: "btn btn-info m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill"
+					})
+				},
+				success: function(friendrequest) {
+					$('#list-friend-request').html(friendrequest);
+					console.log("Success");
+				}
+			})
+			return false;
+		});
+
 		$("#header-button-logout").click(function() {
 			var btnlogout = $(this);
 			$.ajax({
