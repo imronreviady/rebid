@@ -14,10 +14,10 @@ class Core_model extends CI_Model {
         $this->output->set_header('Pragma: no-cache');
 	}
 
-	public function get_image_url($type = '', $id = '')
+	public function get_image_url($id = '')
 	{
-		if (file_exists('uploads/' . $type . '_image/' . $id . '.jpg')) {
-			$image_url = base_url() . 'uploads/' . $type . '_image/' . $id . '.jpg';
+		if (file_exists('uploads/user_image/' . $id . '.jpg')) {
+			$image_url = base_url() . 'uploads/user_image/' . $id . '.jpg';
 		} else {
 			$image_url = base_url() . 'uploads/avatar.jpg';
 		}
@@ -25,18 +25,18 @@ class Core_model extends CI_Model {
 		return $image_url;
 	}
 
-	public function is_active($account_type = '', $id = '')
+	public function is_active($id = '')
 	{
-		$query = $this->db->get_where($account_type, array($account_type. '_id' => $id));
+		$query = $this->db->get_where('user', array('user_id' => $id));
 		if ($query->num_rows() > 0) {
 			$row = $query->row();
 			return $row->is_active;
 		}
 	}
 
-	public function is_username($username = '', $account_type = '')
+	public function is_username($username = '')
 	{
-		$query = $this->db->get_where($account_type, array('username' => $username));
+		$query = $this->db->get_where('user', array('username' => $username));
 		if ($query->num_rows() > 0) {
 			return "available";
 		} else {
@@ -44,9 +44,9 @@ class Core_model extends CI_Model {
 		}
 	}
 
-	public function is_email($email='', $account_type = '')
+	public function is_email($email='')
 	{
-		$query = $this->db->get_where($account_type, array('email' => $email));
+		$query = $this->db->get_where('user', array('email' => $email));
 		if ($query->num_rows() > 0) {
 			return "available";
 		} else {
